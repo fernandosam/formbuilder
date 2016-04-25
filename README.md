@@ -1,4 +1,3 @@
-# formbuilder
-Form builder integrated with Camunda
+# Form Builder
 
-This tool makes it possible to build functional prototypes and integrate them with Camunda.
+This tool uses [AlpacaJS](https://github.com/gitana/alpaca) to build functional prototypes and integrate them with [Camunda](https://github.com/camunda/camunda-bpm-platform).
