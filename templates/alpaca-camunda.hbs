@@ -1,0 +1,70 @@
+ /**
+ * Functions to integrate Camunda with AlpacaJS
+ */
+ 
+var validateForm = function(control,refresh) {
+	control.refreshValidationState(refresh);
+	if (control.form.isFormValid()) {
+		$('button[ng-click="complete()"]').removeAttr("disabled");
+	} else {
+		$('button[ng-click="complete()"]').attr("disabled", "true");
+	}
+};
+
+var upFirstLetter = function(string) {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+var dataType = function(schema, nameInput) {
+	var prop = schema.properties[nameInput];
+
+	if (prop) {
+		if (prop.type == "array") prop.type = "string";
+		prop = upFirstLetter(prop.type);
+	} else {
+		prop = "String";
+	}
+
+	return prop;
+};
+
+var initCamunda = function(schema, options) {
+	for (key in options.fields) {
+		var elNew = document.createElement("input");
+		elNew.setAttribute("name", key);
+		elNew.setAttribute("type", "hidden");
+		elNew.setAttribute("cam-variable-name", key);
+		elNew.setAttribute("cam-variable-type", dataType(schema, key));
+		elNew.setAttribute("class", "form-control");
+		$('#form').append(elNew);
+	}
+
+	$('input:hidden').each(function() {
+		$(this).wrap("<div class='form-group'>");
+	});
+};
+
+var updateCamunda = function(formValue) {
+	$('input:hidden').each(function() {
+		var nameInput = $(this).attr("name");
+		var valueField = formValue[nameInput];
+
+		if (valueField) {
+			$(this).attr("value", valueField);
+		}
+	});
+};
+
+var editForm = function(data) {
+	var view = {
+		"parent": "bootstrap-create",
+		"locale": "pt_BR"
+	};
+
+	if (!jQuery.isEmptyObject(data)) {
+		view.parent = "bootstrap-edit";
+		$('button[ng-click="complete()"]').removeAttr("disabled");
+	}
+
+	return view;
+};
