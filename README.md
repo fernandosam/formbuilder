@@ -59,6 +59,6 @@ Realize os seguintes passos para incluir as bibliotecas javascript na plataforma
 # Form Builder
 	
 1. Fazer download do arquivo .zip
-2. Abrir no navegador o arquivo form-builder.html
+2. Abrir no navegador o arquivo ```form-builder.html```
 	
 
