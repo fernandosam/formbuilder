@@ -1,19 +1,5 @@
 This tool uses [AlpacaJS](https://github.com/gitana/alpaca) to build functional prototypes and integrate them with [Camunda](https://github.com/camunda/camunda-bpm-platform).
 
-# Dependências do Projeto
-
-Para possibilitar a integração do FormBuilder com a plataforma [Camunda 7.4](https://docs.camunda.org/manual/7.4/), é necessário 
-
-1. Arquivo de Configuração
-   * Pasta scripts: 
-   * Arquivo de configuração: 
-   * Página inicial da lista de tarefas: 
-   * Pasta styles: 
-2. Bibliotecas Javascript
-
-3. Estilos
-   * alpacaJS: http://code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.css (versão: 1.5.17).
-
 ```CAMUNDA_TOMCAT = \camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\```
 
 # Configuração do Idioma Português
@@ -43,6 +29,8 @@ Realize os seguintes passos para incluir as bibliotecas javascript na plataforma
    * AlpacaJS: http://code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.js (versão: 1.5.17).
 
 2. Copiar os guias de estilos para a pasta styles (```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\styles\```).
+   * alpacaJS: http://code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.css (versão: 1.5.17).
+
 3. Incluir no arquivo de configuração (```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\scripts\config.js```) o seguinte código:
 
 ```		
