@@ -5,14 +5,12 @@ This tool uses [AlpacaJS](https://github.com/gitana/alpaca) to build functional 
 Para possibilitar a integração do FormBuilder com a plataforma [Camunda 7.4](https://docs.camunda.org/manual/7.4/), é necessário 
 
 1. Arquivo de Configuração
-   * Pasta scripts: ```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\scripts\```
+   * Pasta scripts: 
    * Arquivo de configuração: 
-   * Página inicial da lista de tarefas: ```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\index.html```
-   * Pasta styles: ```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\styles\```
+   * Página inicial da lista de tarefas: 
+   * Pasta styles: 
 2. Bibliotecas Javascript
-   * bootstrap:	https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js (versão: 3.3.2).
-   * handlebars: http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.5.js (versão: 4.0.5).
-   * alpacaJS: http://code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.js (versão: 1.5.17).
+
 3. Estilos
    * alpacaJS: http://code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.css (versão: 1.5.17).
 
@@ -37,11 +35,15 @@ A plataforma Camunda está disponível no idioma português (pt_BR), mas precisa
 
 # Inclusão de Bibliotecas Javascript
 
-Realize os seguintes passos para incluir as bibliotecas javascript no projeto.
+Realize os seguintes passos para incluir as bibliotecas javascript na plataforma Camunda.
 
-1. Copiar as bibliotecas javascript (2) para a pasta scripts (1.1). Obs: retirar a versão do nome da biblioteca.
-2. Copiar estilos (2) para a pasta styles (1.4).
-3. Incluir no arquivo de configuração (1.2) o seguinte código:
+1. Copiar as seguintes bibliotecas javascript para a pasta de scripts (```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\scripts\```). Obs: retirar a versão do nome da biblioteca ao realizar a cópia.
+   * Bootstrap:	https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js (versão: 3.3.2).
+   * Handlebars: http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.5.js (versão: 4.0.5).
+   * AlpacaJS: http://code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.js (versão: 1.5.17).
+
+2. Copiar os guias de estilos para a pasta styles (```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\styles\```).
+3. Incluir no arquivo de configuração (```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\scripts\config.js```) o seguinte código:
 
 ```		
    customScripts: {
@@ -60,7 +62,7 @@ Realize os seguintes passos para incluir as bibliotecas javascript no projeto.
 	 }
    }
 ```
-4.  Incluir no arquivo inicial da lista de tarefas (1.3) o seguinte código (incluir na região destinada aos estilos da página).
+4.  Incluir no arquivo inicial da lista de tarefas (```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\index.html```) o seguinte código (obs: incluir na região destinada aos guias de estilos da página).
 	 
 ```
 	  <link type="text/css" href="$APP_ROOT/app/tasklist/styles/alpaca.min.css" rel="stylesheet" />
