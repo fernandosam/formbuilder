@@ -12,7 +12,7 @@ A plataforma Camunda está disponível no idioma português (pt_BR), mas precisa
 	
 2. Incluir no arquivo de configuração (```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\scripts\config.js```) o seguinte código:
 
-```
+```json
 "locales": {
   "availableLocales": ["pt_BR","en"],
   "fallbackLocale": "pt_BR"
@@ -33,7 +33,7 @@ Realize os seguintes passos para incluir as bibliotecas javascript na plataforma
 
 3. Incluir no arquivo de configuração (```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\scripts\config.js```) o seguinte código:
 
-```		
+```javascript		
    customScripts: {
 	 // AngularJS module names
 	 ngDeps: ['ui.bootstrap'],
@@ -52,7 +52,7 @@ Realize os seguintes passos para incluir as bibliotecas javascript na plataforma
 ```
 4.  Incluir no arquivo inicial da lista de tarefas (```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\index.html```) o seguinte código (obs: incluir na região destinada aos guias de estilos da página).
 	 
-```
+```html
 	  <link type="text/css" href="$APP_ROOT/app/tasklist/styles/alpaca.min.css" rel="stylesheet" />
 ```
 
