@@ -2,32 +2,32 @@ This tool uses [AlpacaJS](https://github.com/gitana/alpaca) to build functional 
 
 # Dependências do Projeto
 
+Para possibilitar a integração do FormBuilder com a plataforma [Camunda 7.4](https://docs.camunda.org/manual/7.4/), é necessário 
+
 1. Arquivo de Configuração
    * Pasta scripts: ```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\scripts\```
-   * Arquivo de configuração: ```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\scripts\config.js```
+   * Arquivo de configuração: 
    * Página inicial da lista de tarefas: ```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\index.html```
    * Pasta styles: ```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\styles\```
-   * Pasta de idiomas: ```camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\webapps\camunda\app\tasklist\locales\```
 2. Bibliotecas Javascript
    * bootstrap:	https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js (versão: 3.3.2).
    * handlebars: http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v4.0.5.js (versão: 4.0.5).
    * alpacaJS: http://code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.js (versão: 1.5.17).
 3. Estilos
    * alpacaJS: http://code.cloudcms.com/alpaca/1.5.17/bootstrap/alpaca.min.css (versão: 1.5.17).
-4. Traduções da Plataforma
-   * https://github.com/camunda/camunda-tasklist-translations/tree/master/locales
 
-# Customizações da Plataforma Camunda
-
-Os ajustes foram realizados na plataforma [Camunda na versão 7.4](https://docs.camunda.org/manual/7.4/).
+```CAMUNDA_TOMCAT = \camunda-bpm-tomcat-7.4.0\server\apache-tomcat-8.0.24\```
 
 # Configuração do Idioma Português
 
 A plataforma Camunda está disponível no idioma português (pt_BR), mas precisa ser configurada para a inclusão do idioma. Para isso, realize os seguintes passos:
 
-1. Copiar o arquivo de idioma pt_BR.json (3.1) para a pasta de idiomas (1.5).
-2. Incluir no arquivo de configuração (1.2) o seguinte código:
+1. Copiar o arquivo de idioma pt_BR.json para a pasta de idiomas.
+   * pt_BR.json: ```https://github.com/camunda/camunda-tasklist-translations/tree/master/locales```
+   * Pasta de idiomas: ```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\locales\```
 	
+2. Incluir no arquivo de configuração (```CAMUNDA_TOMCAT\webapps\camunda\app\tasklist\scripts\config.js```) o seguinte código:
+
 ```
 "locales": {
   "availableLocales": ["pt_BR","en"],
