@@ -1078,11 +1078,17 @@ var setup = function() {
         //var camundaChecked = $(".camunda").is(':checked');
         // Templates
 
+		var formidVar = foldToASCII(config.schema.title).toLocaleLowerCase().replace(/[ `~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+		
+		var context = {
+            formid: formidVar,
+        };
         var template = Handlebars.templates["index.hbs"];
-        var BUILDER_INDEX = template();
+        var BUILDER_INDEX = template(context);
 
         var template = Handlebars.templates['config.hbs'];
         var context = {
+			formid: formidVar,
             data: dataVar,
             schema: schemaVar,
             options: optionsVar,
@@ -1092,6 +1098,7 @@ var setup = function() {
 
         var context = {
             camunda: "true",
+			formid: formidVar,
             data: dataVar,
             schema: schemaVar,
             options: optionsVar,
