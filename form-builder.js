@@ -1108,7 +1108,7 @@ var setup = function() {
         var partial = Handlebars.registerPartial('config', BUILDER_CONF2);
 
         var template = Handlebars.templates["camunda.hbs"];
-        var BUILDER_CAMUNDA = template(partial);
+        var BUILDER_CAMUNDA = template(context, partial);
 
         var template = Handlebars.templates['locate.hbs'];
         var BUILDER_LOCATE = template();
