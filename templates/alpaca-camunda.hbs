@@ -29,15 +29,18 @@ var dataType = function(schema, nameInput) {
 };
 
 var initCamunda = function(schema, options) {
-	for (key in options.fields) {
-		var elNew = document.createElement("input");
-		elNew.setAttribute("name", key);
-		elNew.setAttribute("type", "hidden");
-		elNew.setAttribute("cam-variable-name", key);
-		elNew.setAttribute("cam-variable-type", dataType(schema, key));
-		elNew.setAttribute("class", "form-control");
-		$('#form').append(elNew);
-	}
+	$(':input').each(function() {
+		var nameAtt = $(this).attr("name");
+		if (nameAtt) {
+			var elNew = document.createElement("input");
+			elNew.setAttribute("name", nameAtt);
+			elNew.setAttribute("type", "hidden");
+			elNew.setAttribute("cam-variable-name", nameAtt);
+			elNew.setAttribute("cam-variable-type", dataType(schema, nameAtt));
+			elNew.setAttribute("class", "form-control");
+			$('form').append(elNew);
+		}
+	});
 
 	$('input:hidden').each(function() {
 		$(this).wrap("<div class='form-group'>");

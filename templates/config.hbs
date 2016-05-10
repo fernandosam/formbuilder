@@ -70,6 +70,7 @@ $(document).ready(function() {
 	 * @param control
 	 */
 	var postRenderCallback = function(control) {
+		initCamunda(schema, options);
 		validateForm(control);
 		
 		// Custom Programming
@@ -83,7 +84,6 @@ $(document).ready(function() {
 	
 	// Call functions to init Alpaca integration with Camunda
 	var view = editForm(data);
-	initCamunda(schema, options);
 	
 	/**
 	 * Render the form.
