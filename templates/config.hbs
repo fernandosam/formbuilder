@@ -68,19 +68,21 @@ $(document).ready(function() {
 	 * Once the render is completed, this callback is fired and the top-level Alpaca control is handed back.
 	 *
 	 * @param control
-	 */
+	 */	
 	var postRenderCallback = function(control) {
-		initCamunda(schema, options);
-		validateForm(control);
-		
 		// Custom Programming
 		{{{scripts}}}
 		
-		$( ":input" ).keyup(function() {
-			updateCamunda(control.getValue());
-			validateForm(control,true);
-		});
+		validateForm(control);
+		updateCamunda(schema, control.getValue());
+			
+		$('body').on('keyup click change',':input',function(){
+			updateCamunda(schema, control.getValue());
+			//validateForm(control, true);
+			//console.log(JSON.stringify(control.getValue()));
+		});	
 	};
+	
 	
 	// Call functions to init Alpaca integration with Camunda
 	var view = editForm(data);

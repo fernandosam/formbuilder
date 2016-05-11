@@ -4,6 +4,7 @@
  
 var validateForm = function(control,refresh) {
 	control.refreshValidationState(refresh);
+	
 	if (control.form.isFormValid()) {
 		$('button[ng-click="complete()"]').removeAttr("disabled");
 	} else {
@@ -28,34 +29,63 @@ var dataType = function(schema, nameInput) {
 	return prop;
 };
 
-var initCamunda = function(schema, options) {
-	$(':input').each(function() {
-		var nameAtt = $(this).attr("name");
-		if (nameAtt) {
-			var elNew = document.createElement("input");
-			elNew.setAttribute("name", nameAtt);
-			elNew.setAttribute("type", "hidden");
-			elNew.setAttribute("cam-variable-name", nameAtt);
-			elNew.setAttribute("cam-variable-type", dataType(schema, nameAtt));
-			elNew.setAttribute("class", "form-control");
-			$('form').append(elNew);
-		}
-	});
-
-	$('input:hidden').each(function() {
-		$(this).wrap("<div class='form-group'>");
-	});
+var updateCamunda = function(schema, formValue) {
+    var toArray = [];
+    $(":input[name-cam]").remove();
+    recursiveIteration(schema, formValue, toArray);
 };
 
-var updateCamunda = function(formValue) {
-	$('input:hidden').each(function() {
-		var nameInput = $(this).attr("name");
-		var valueField = formValue[nameInput];
+var recursiveIteration = function(schema, object, toArray) {
+    for (var property in object) {
+        if (object.hasOwnProperty(property)) {
+            if (typeof object[property] == "object") {
+                recursiveIteration(schema, object[property], toArray);
+            } else {
+                //found a property which is not an object, check for your conditions here
+                var key = property;
+                var value = object[property];
+                var dType = dataType(schema, key);
 
-		if (valueField) {
-			$(this).attr("value", valueField);
-		}
-	});
+                if (toArray[key]) {
+                    toArray[key] = toArray[key] + 1;
+                } else {
+                    toArray[key] = 1;
+                }
+
+                if (toArray[key] > 1) {
+                    key = property + "_" + toArray[key];
+                }
+
+                if (key !== "" && value !== "") {
+                    var hiddenInput = $(":input[cam-variable-name=" + key + "]");
+                    var hiddenInputVal = hiddenInput.val();
+
+                    if (hiddenInputVal === undefined) {
+                        var elNew = document.createElement("input");
+                        elNew.setAttribute("name", key);
+                        elNew.setAttribute("type", "hidden");
+                        elNew.setAttribute("cam-variable-name", key);
+                        elNew.setAttribute("cam-variable-type", dType);
+                        elNew.setAttribute("class", "form-control");
+                        elNew.setAttribute("value", value);
+						
+						var dv = document.createElement('div');
+						dv.setAttribute("class", "form-group");
+						dv.setAttribute("name-cam", key);
+						dv.appendChild(elNew);
+                        
+						//$(elNew).wrap("<div class='form-group'>");
+						
+						$('form').prepend(dv);
+						
+                    } else {
+                        hiddenInput.attr("value", value)
+                    }
+                }
+                //console.log("found prop: " + object[property]);
+            }
+        }
+    }
 };
 
 var editForm = function(data) {
