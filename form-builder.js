@@ -1113,9 +1113,6 @@ var setup = function() {
         var template = Handlebars.templates['locate.hbs'];
         var BUILDER_LOCATE = template();
 
-        var template = Handlebars.templates['alpaca-camunda.hbs'];
-        var BUILDER_INTEGR = template();
-
         // Pasta Raiz
         zip.file("camunda.html", BUILDER_CAMUNDA);
         zip.file("index.html", BUILDER_INDEX);
@@ -1128,7 +1125,6 @@ var setup = function() {
 
         // Pasta scripts
         var scriptsDir = zip.folder("scripts");
-        scriptsDir.file("alpaca-camunda.js", BUILDER_INTEGR);
         scriptsDir.file("config.js", BUILDER_CONF1);
         scriptsDir.file("locate.js", BUILDER_LOCATE);
 		scriptsDir.file("custom.js", scriptsVar);

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+ $(document).ready(function() {
 	 /**
 	 * Initial data
 	 *
@@ -6,11 +6,11 @@ $(document).ready(function() {
 	 * provided that it fits the schema and options (if you provide those).
 	 *
 	 */
-{{#if data}}
-	var data = {{{data}}};	
-{{else}}
-	var data = {};
-{{/if}}
+	{{#if data}}
+		var data = {{{data}}};	
+	{{else}}
+		var data = {};
+	{{/if}}
 
 	/**
 	 * JSON-schema for the form
@@ -25,11 +25,11 @@ $(document).ready(function() {
 	 * @see http://www.alpacajs.org
 	 *
 	 */
-{{#if schema}}
-	var schema = {{{schema}}};	
-{{else}}
-	var schema = {};
-{{/if}}
+	{{#if schema}}
+		var schema = {{{schema}}};	
+	{{else}}
+		var schema = {};
+	{{/if}}
 
 	/**
 	 * Layout options for the form
@@ -41,26 +41,22 @@ $(document).ready(function() {
 	 * @see http://www.alpacajs.org
 	 *
 	 */
-{{#if options}}
-	var options = {{{options}}};
+	{{#if options}}
+		var options = {{{options}}};
 
-	if (document.getElementsByTagName('meta').description) {
-		options.form = {};
-	} else {
-		options.form = {
-			"buttons": {
-				"submit": {}
-			},
-			"toggleSubmitValidState": false
-		};
-	}
-	
-{{else}}
-	var options = {};
-{{/if}}
-	
-	//* End Initial data
-
+		if (!document.getElementsByTagName('meta').description) {
+			options.form = {
+				"buttons": {
+					"submit": {}
+				},
+				"toggleSubmitValidState": false
+			};
+		}
+		
+	{{else}}
+		var options = {};
+	{{/if}}
+		
 	/**
 	 * This is an optional post render callback that Alpaca will call once the form finishes rendering.  The form
 	 * rendering itself is asynchronous as it may load templates or other resources for use in generating the UI.
@@ -74,18 +70,49 @@ $(document).ready(function() {
 		{{{scripts}}}
 		
 		validateForm(control);
-		updateCamunda(schema, control.getValue());
 			
 		$('body').on('keyup click change',':input',function(){
-			updateCamunda(schema, control.getValue());
-			//validateForm(control, true);
-			//console.log(JSON.stringify(control.getValue()));
+			updateCamunda(control.getValue());
+		});
+		
+		$('body').on('change',':input',function(){
+			validateForm(control, true);
 		});	
 	};
-	
-	
+
 	// Call functions to init Alpaca integration with Camunda
+	var editForm = function(data) {
+		var view = {
+			"parent": "bootstrap-create",
+			"locale": "pt_BR"
+		};
+
+		if (!jQuery.isEmptyObject(data)) {
+			view.parent = "bootstrap-edit";
+		}
+
+		return view;
+	};
+	
 	var view = editForm(data);
+
+	var validateForm = function(control, refresh) {
+		control.refreshValidationState(refresh);
+		
+		if (control.form && control.form.isFormValid()) {
+			$('button[ng-click="complete()"]').removeAttr("disabled");
+			$('button[ng-click="startProcessInstance()"]').removeAttr("disabled");
+		} else {
+			$('button[ng-click="complete()"]').attr("disabled", "true");
+			$('button[ng-click="startProcessInstance()"]').attr("disabled", "true");
+		}
+	};
+
+	var updateCamunda = function(object) {
+		if (object) {
+			$('#json_value').attr("value", JSON.stringify(object));
+		}
+	};
 	
 	/**
 	 * Render the form.

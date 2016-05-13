@@ -1,40 +1,7 @@
  /**
  * Functions to integrate Camunda with AlpacaJS
  */
- 
-var validateForm = function(control,refresh) {
-	control.refreshValidationState(refresh);
-	
-	if (control.form.isFormValid()) {
-		$('button[ng-click="complete()"]').removeAttr("disabled");
-	} else {
-		$('button[ng-click="complete()"]').attr("disabled", "true");
-	}
-};
-
-var upFirstLetter = function(string) {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-};
-
-var dataType = function(schema, nameInput) {
-	var prop = schema.properties[nameInput];
-
-	if (prop) {
-		if (prop.type == "array") prop.type = "string";
-		prop = upFirstLetter(prop.type);
-	} else {
-		prop = "String";
-	}
-
-	return prop;
-};
-
-var updateCamunda = function(schema, formValue) {
-    var toArray = [];
-    $(":input[name-cam]").remove();
-    recursiveIteration(schema, formValue, toArray);
-};
-
+/*
 var recursiveIteration = function(schema, object, toArray) {
     for (var property in object) {
         if (object.hasOwnProperty(property)) {
@@ -87,17 +54,5 @@ var recursiveIteration = function(schema, object, toArray) {
         }
     }
 };
+*/
 
-var editForm = function(data) {
-	var view = {
-		"parent": "bootstrap-create",
-		"locale": "pt_BR"
-	};
-
-	if (!jQuery.isEmptyObject(data)) {
-		view.parent = "bootstrap-edit";
-		$('button[ng-click="complete()"]').removeAttr("disabled");
-	}
-
-	return view;
-};
