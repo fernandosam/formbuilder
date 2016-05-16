@@ -1,5 +1,5 @@
- $(document).ready(function() {
-	 /**
+$(document).ready(function() {
+	/**
 	 * Initial data
 	 *
 	 * Fill in the JSON data that should be populated into the form.  This can be any JSON data that you'd like
@@ -51,6 +51,12 @@
 				},
 				"toggleSubmitValidState": false
 			};
+		} else {
+			options.form = {		
+				"attributes": {
+					"cam-form": ""
+				}
+			};
 		}
 		
 	{{else}}
@@ -93,7 +99,7 @@
 
 		return view;
 	};
-	
+
 	var view = editForm(data);
 
 	var validateForm = function(control, refresh) {
@@ -113,18 +119,49 @@
 			$('#json_value').attr("value", JSON.stringify(object));
 		}
 	};
-	
+
 	/**
 	 * Render the form.
 	 *
 	 * We call alpaca() with the data, schema and options to tell Alpaca to render into the selected dom element(s).
 	 *
 	 */ 
-	$("#{{{formid}}}").alpaca({
+	$("#form_{{{formid}}}").alpaca({
 		"dataSource": data,
 		"optionsSource": options,
 		"schemaSource": schema,
 		"viewSource": view,
 		"postRender": postRenderCallback
 	});
+	
+	
+	/**
+	 * Variables Manager
+	 */
+	if (typeof(camForm) != "undefined") {
+		var variableManager = camForm.variableManager;
+
+		var el = document.createElement("input");
+		el.setAttribute("id", "json_value");
+		el.setAttribute("type", "hidden");
+		el.setAttribute("value", "");
+		$("#form_{{{formid}}}").prepend(el);
+
+		camForm.on('form-loaded', function() {
+			variableManager.createVariable({
+				name: schema.title,
+				type: 'json'
+			});
+			//console.log(variableManager.variables);
+		});
+
+		camForm.on('submit', function(evt) {
+			var fieldValue = $('#json_value').val();
+			
+			if (fieldValue){
+				variableManager.variableValue(schema.title, JSON.parse(fieldValue));
+				//console.log(variableManager.variables);
+			}
+		});
+	}
 });

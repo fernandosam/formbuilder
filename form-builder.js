@@ -1078,7 +1078,8 @@ var setup = function() {
         //var camundaChecked = $(".camunda").is(':checked');
         // Templates
 
-		var formidVar = foldToASCII(config.schema.title).toLocaleLowerCase().replace(/[ `~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+		//var formidVar = foldToASCII(config.schema.title).toLocaleLowerCase().replace(/[ `~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+		var formidVar = makeid();
 		
 		var context = {
             formid: formidVar,
@@ -1104,12 +1105,13 @@ var setup = function() {
             options: optionsVar,
             scripts: scriptsVar
         };
+		
         var BUILDER_CONF2 = template(context);
         var partial = Handlebars.registerPartial('config', BUILDER_CONF2);
 
         var template = Handlebars.templates["camunda.hbs"];
         var BUILDER_CAMUNDA = template(context, partial);
-
+		
         var template = Handlebars.templates['locate.hbs'];
         var BUILDER_LOCATE = template();
 
@@ -1204,4 +1206,15 @@ function isEmpty(obj) {
     }
 
 	return true && JSON.stringify(obj) === JSON.stringify({});
+}
+
+
+function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
 }

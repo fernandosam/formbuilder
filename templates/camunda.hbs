@@ -1,34 +1,5 @@
-<form cam-form role="form" id="{{{formid}}}" data-alpaca-form-id="{{{formid}}}" name="formBuilder">
-	<script cam-script type="text/form-script">
-		var schema = {{{schema}}};
-		
-		var variableManager = camForm.variableManager;
-
-		// create variable as element
-		var el = document.createElement("input");
-		el.setAttribute("id", "json_value");
-		el.setAttribute("type", "hidden");
-		el.setAttribute("value", "");
-		$({{{formid}}}).prepend(el);
-
-		camForm.on('form-loaded', function() {
-			variableManager.createVariable({
-				name: schema.title,
-				type: 'json'
-			});
-		});
-
-		camForm.on('submit', function(evt) {
-			var fieldValue = $('#json_value').val();
-			
-			if (fieldValue){
-				variableManager.variableValue(schema.title, JSON.parse(fieldValue));
-				console.log(variableManager.variables);
-			}
-		});
+<form role="form" id="form_{{{formid}}}" name="formBuilder">
+  <script cam-script type="text/form-script">
+		{{> config }}
   </script>
 </form>
-
-<script cam-script type="text/javascript">
-	{{> config}}
-</script>
