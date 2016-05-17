@@ -6,12 +6,8 @@ $(document).ready(function() {
 	 * provided that it fits the schema and options (if you provide those).
 	 *
 	 */
-	{{#if data}}
-		var data = {{{data}}};	
-	{{else}}
-		var data = {};
-	{{/if}}
-
+	var data = {};
+	
 	/**
 	 * JSON-schema for the form
 	 *
@@ -44,24 +40,24 @@ $(document).ready(function() {
 	{{#if options}}
 		var options = {{{options}}};
 
-		if (!document.getElementsByTagName('meta').description) {
-			options.form = {
-				"buttons": {
-					"submit": {}
-				},
-				"toggleSubmitValidState": false
-			};
-		} else {
-			options.form = {		
-				"attributes": {
-					"cam-form": ""
-				}
-			};
-		}
-		
+		options.form = {
+			"buttons": {
+				"submit": {}
+			},
+			"toggleSubmitValidState": false
+		};
 	{{else}}
 		var options = {};
 	{{/if}}
+	
+	
+	/**
+	 * View for the form
+	 */
+	var view = {
+		"parent": "bootstrap-create",
+		"locale": "pt_BR"
+	};
 		
 	/**
 	 * This is an optional post render callback that Alpaca will call once the form finishes rendering.  The form
@@ -70,56 +66,92 @@ $(document).ready(function() {
 	 * Once the render is completed, this callback is fired and the top-level Alpaca control is handed back.
 	 *
 	 * @param control
-	 */	
+	 */
 	var postRenderCallback = function(control) {
-		// Custom Programming
-		{{{scripts}}}
-		
-		validateForm(control);
-			
-		$('body').on('keyup click change',':input',function(){
-			updateCamunda(control.getValue());
-		});
-		
-		$('body').on('change',':input',function(){
-			validateForm(control, true);
-		});	
+		// All control is in alpaca-camunda.js
 	};
-
-	// Call functions to init Alpaca integration with Camunda
-	var editForm = function(data) {
-		var view = {
-			"parent": "bootstrap-create",
-			"locale": "pt_BR"
+	
+	/**
+	 * Integration Alpaca-Camunda
+	 */
+	if (typeof(camForm) != "undefined") {
+		
+		// Define Form Attributes to Camunda integration
+		options.form = {		
+			"attributes": {
+				"cam-form": ""
+			}
+		};
+		
+		// Post Render Callback
+		var postRenderCallback = function(control) {
+			// Custom Scripts
+			{{{scripts}}}
+			// End Custom Scripts
+			
+			validateForm(control);
+				
+			$('body').on('keyup click change',':input',function(){
+				updateCamunda(control.getValue());
+			});
+			
+			$('body').on('change',':input',function(){
+				validateForm(control, true);
+			});	
 		};
 
-		if (!jQuery.isEmptyObject(data)) {
-			view.parent = "bootstrap-edit";
-		}
+		// Validate Form
+		var validateForm = function(control, refresh) {
+			control.refreshValidationState(refresh);
+			
+			if (control.form && control.form.isFormValid()) {
+				$('button[ng-click="complete()"]').removeAttr("disabled");
+				$('button[ng-click="startProcessInstance()"]').removeAttr("disabled");
+			} else {
+				$('button[ng-click="complete()"]').attr("disabled", "true");
+				$('button[ng-click="startProcessInstance()"]').attr("disabled", "true");
+			}
+		};
 
-		return view;
-	};
+		// Update Camunda
+		var updateCamunda = function(object) {
+			if (object) {
+				$('#json_value').attr("value", JSON.stringify(object));
+			}
+		};
 
-	var view = editForm(data);
-
-	var validateForm = function(control, refresh) {
-		control.refreshValidationState(refresh);
+		// Events Handler
+		var variableManager = camForm.variableManager;
 		
-		if (control.form && control.form.isFormValid()) {
-			$('button[ng-click="complete()"]').removeAttr("disabled");
-			$('button[ng-click="startProcessInstance()"]').removeAttr("disabled");
-		} else {
-			$('button[ng-click="complete()"]').attr("disabled", "true");
-			$('button[ng-click="startProcessInstance()"]').attr("disabled", "true");
-		}
-	};
+		camForm.on('form-loaded', function() {
+			var el = document.createElement("input");
+			el.setAttribute("id", "json_value");
+			el.setAttribute("type", "hidden");
+			el.setAttribute("value", "");
+			$("#form_bDNIM").prepend(el);
+		
+			variableManager.fetchVariable(schema.title);
+		});
+		
+		camForm.on('variables-fetched', function() {
+			var value = variableManager.variableValue(schema.title);
+								
+			if (typeof(value) != "undefined") {
+				$('#json_value').attr("value", value);
+				view.parent = "bootstrap-edit";
+				data = value;
+			}
+		});
 
-	var updateCamunda = function(object) {
-		if (object) {
-			$('#json_value').attr("value", JSON.stringify(object));
-		}
-	};
-
+		camForm.on('submit', function(evt) {
+			var fieldValue = $('#json_value').val();
+			
+			if (typeof(fieldValue) != "undefined"){	
+				variableManager.variableValue(schema.title, JSON.parse(fieldValue));
+			}
+		});
+	}
+	
 	/**
 	 * Render the form.
 	 *
@@ -135,33 +167,4 @@ $(document).ready(function() {
 	});
 	
 	
-	/**
-	 * Variables Manager
-	 */
-	if (typeof(camForm) != "undefined") {
-		var variableManager = camForm.variableManager;
-
-		var el = document.createElement("input");
-		el.setAttribute("id", "json_value");
-		el.setAttribute("type", "hidden");
-		el.setAttribute("value", "");
-		$("#form_{{{formid}}}").prepend(el);
-
-		camForm.on('form-loaded', function() {
-			variableManager.createVariable({
-				name: schema.title,
-				type: 'json'
-			});
-			//console.log(variableManager.variables);
-		});
-
-		camForm.on('submit', function(evt) {
-			var fieldValue = $('#json_value').val();
-			
-			if (fieldValue){
-				variableManager.variableValue(schema.title, JSON.parse(fieldValue));
-				//console.log(variableManager.variables);
-			}
-		});
-	}
 });
