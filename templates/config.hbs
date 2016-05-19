@@ -68,8 +68,9 @@ $(document).ready(function() {
 	 * @param control
 	 */
 	var postRenderCallback = function(control) {
-		// All control is in alpaca-camunda.js
+		// All control is in Integration Alpaca-Camunda
 	};
+	
 	
 	/**
 	 * Integration Alpaca-Camunda
@@ -128,7 +129,7 @@ $(document).ready(function() {
 			el.setAttribute("id", "json_value");
 			el.setAttribute("type", "hidden");
 			el.setAttribute("value", "");
-			$("#form_bDNIM").prepend(el);
+			$("#form_{{{formid}}}").prepend(el);
 		
 			variableManager.fetchVariable(schema.title);
 		});
@@ -151,7 +152,8 @@ $(document).ready(function() {
 			}
 		});
 	}
-	
+	// End Integration Alpaca-Camunda
+
 	/**
 	 * Render the form.
 	 *
@@ -165,6 +167,4 @@ $(document).ready(function() {
 		"viewSource": view,
 		"postRender": postRenderCallback
 	});
-	
-	
 });
